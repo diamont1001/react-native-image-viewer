@@ -229,6 +229,10 @@ export class Props {
   };
 
   public menus?: ({ cancel, saveToLocal }: any) => React.ReactElement<any>;
+
+  public handleHorizontalOuterRangeOffset?: (offsetX: number) => {
+    // 
+  };
 }
 
 export class State {

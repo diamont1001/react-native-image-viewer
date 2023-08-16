@@ -60,6 +60,11 @@ export default class ImageViewer extends React.Component<Props, State> {
   }
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
+    // 如果 imageUrls 更新了，需要重新 init 一下
+    if (this.props.imageUrls.length !== prevProps.imageUrls.length) {
+      this.init(this.props);
+    }
+
     if (prevProps.index !== this.props.index) {
       // 立刻预加载要看的图
       this.loadImage(this.props.index || 0);
@@ -79,6 +84,7 @@ export default class ImageViewer extends React.Component<Props, State> {
    * props 有变化时执行
    */
   public init(nextProps: Props) {
+    // console.log('[react-native-image-zoom-viewer-1] init');
     if (nextProps.imageUrls.length === 0) {
       // 隐藏时候清空
       this.fadeAnim.setValue(0);
@@ -94,6 +100,9 @@ export default class ImageViewer extends React.Component<Props, State> {
         status: 'loading'
       });
     });
+
+    // 重置 loadedIndex
+    this.loadedIndex.clear();
 
     this.setState(
       {
@@ -137,6 +146,10 @@ export default class ImageViewer extends React.Component<Props, State> {
    */
   public loadImage(index: number) {
     if (!this!.state!.imageSizes![index]) {
+      return;
+    }
+    // 解决 imageUrls 变化后可能会崩溃的bug
+    if (!this!.props!.imageUrls![index]) {
       return;
     }
 
@@ -222,9 +235,7 @@ export default class ImageViewer extends React.Component<Props, State> {
    * 预加载图片
    */
   public preloadImage = (index: number) => {
-    // if (index < this.state.imageSizes!.length) {
-    // 解决 imageUrls 变化后预加载不正常的bug
-    if (index < this.props.imageUrls!.length) {
+    if (index < this.state.imageSizes!.length) {
       this.loadImage(index + 1);
     }
   };
@@ -236,6 +247,10 @@ export default class ImageViewer extends React.Component<Props, State> {
     this.positionX.setValue(this.positionXNumber);
 
     const offsetXRTL = !I18nManager.isRTL ? offsetX : -offsetX;
+
+    if (this.props.handleHorizontalOuterRangeOffset) {
+      this.props.handleHorizontalOuterRangeOffset(offsetXRTL);
+    }
 
     if (offsetXRTL < 0) {
       if (this!.state!.currentShowIndex || 0 < this.props.imageUrls.length - 1) {
