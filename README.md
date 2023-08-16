@@ -1,3 +1,5 @@
+react-native-image-zoom-viewer 在2021年9月28号已停更，这个为 fork 版本，修复了一些 bug 以及少许更新。
+
 ## Show Cases
 
 **Swiper image**
@@ -17,7 +19,7 @@
 ### Installation
 
 ```bash
-npm i react-native-image-zoom-viewer --save
+npm i react-native-image-zoom-viewer-1
 ```
 
 ### Basic Usage
@@ -38,7 +40,7 @@ $ create-react-native-app AwesomeProject
 
 ```typescript
 import { Modal } from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import ImageViewer from 'react-native-image-zoom-viewer-1';
 
 const images = [{
     // Simplest usage.

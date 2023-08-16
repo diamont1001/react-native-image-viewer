@@ -222,7 +222,9 @@ export default class ImageViewer extends React.Component<Props, State> {
    * 预加载图片
    */
   public preloadImage = (index: number) => {
-    if (index < this.state.imageSizes!.length) {
+    // if (index < this.state.imageSizes!.length) {
+    // 解决 imageUrls 变化后预加载不正常的bug
+    if (index < this.props.imageUrls!.length) {
       this.loadImage(index + 1);
     }
   };
